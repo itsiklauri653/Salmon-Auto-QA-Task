@@ -1,0 +1,50 @@
+plugins {
+  id 'java'
+  id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+  id 'io.qameta.allure' version '2.10.0'
+}
+
+group 'ph.salmon'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  allureVersion = '2.22.0'
+  aspectJWeaverVersion = '1.9.21'
+  junitVersion = '5.9.3'
+  restAssuredVersion = '5.4.0'
+  jacksonVersion = '2.17.1'
+}
+
+dependencies {
+  runtimeOnly("org.aspectj:aspectjweaver:1.9.21")
+
+  implementation("io.qameta.allure:allure-rest-assured:${allureVersion}")
+  testImplementation("io.qameta.allure:allure-junit5:${allureVersion}")
+
+  implementation("io.rest-assured:rest-assured:${restAssuredVersion}")
+
+  testImplementation('org.slf4j:slf4j-simple:2.0.7')
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+  implementation("com.github.javafaker:javafaker:1.0.2")
+
+  implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+  implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+}
+
+test {
+  environment("baseUrl", "https://jsonplaceholder.typicode.com")
+  useJUnitPlatform()
+}
+
+allure {
+  version = "${allureVersion}"
+  aspectjweaver = true
+  autoconfigure = true
+}
